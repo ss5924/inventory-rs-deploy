@@ -1,0 +1,1 @@
+# inventory-rs-deploy
