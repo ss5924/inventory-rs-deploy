@@ -1,0 +1,28 @@
+version: '3.0'
+services:
+  gateway:
+    image: inventory-rs-gateway:latest
+    container_name: inventory-rs-gateway
+    networks:
+      - inventory-network
+    ports:
+      - "30001:30001"
+  app1:
+    image: inventory-rs-loc-api:latest
+    container_name: inventory-rs-loc-service
+    networks:
+      - inventory-network
+    ports:
+      - "30003:30003"
+
+  app2:
+    image: inventory-rs-machine-api-container:latest
+    container_name: inventory-rs-machine-service
+    networks:
+      - inventory-network
+    ports:
+      - "30004:30004"
+
+networks:
+  inventory-network:
+    driver: bridge
