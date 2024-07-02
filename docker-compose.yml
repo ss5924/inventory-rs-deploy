@@ -8,7 +8,7 @@ services:
     ports:
       - "30001:30001"
   app1:
-    image: inventory-rs-loc-api:latest
+    image: inventory-rs-loc-service:latest
     container_name: inventory-rs-loc-service
     networks:
       - inventory-network
@@ -16,7 +16,7 @@ services:
       - "30003:30003"
 
   app2:
-    image: inventory-rs-machine-api-container:latest
+    image: inventory-rs-machine-service:latest
     container_name: inventory-rs-machine-service
     networks:
       - inventory-network
