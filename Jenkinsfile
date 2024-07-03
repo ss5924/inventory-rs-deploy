@@ -16,7 +16,7 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    withEnv(["DOCKER_REGISTRY=${DOCKER_REGISTRY}"]) {
+                    withEnv(["DOCKER_REGISTRY=${DOCKER_REGISTRY}", "DEPLOY_FILE=${DEPLOY_FILE}"]) {
                         sh 'docker-compose -f ${DEPLOY_FILE} down'
                         sh 'docker-compose -f ${DEPLOY_FILE} up -d'
                     }
