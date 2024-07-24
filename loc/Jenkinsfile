@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+    
+    environment {
+        IMAGE_NAME = 'inventory-rs-loc-service'
+        NEXUS_URL = 'http://192.168.0.37:8081/repository/maven-snapshots/'
+        NEXUS_REPOSITORY = 'maven-snapshots'
+        NEXUS_CREDENTIALS_ID = 'nexus-credentials-id'
+        DOCKER_REGISTRY = '192.168.0.37:5000'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/ss5924/inventory-rs-loc-service.git'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    docker.image('jdk21-maven:latest').inside {
+                        configFileProvider([configFile(fileId: 'f2b40b8d-923d-408c-9ce6-04d63234aafb', variable: 'MAVEN_SETTINGS')]) {
+                            withCredentials([usernamePassword(credentialsId: "${NEXUS_CREDENTIALS_ID}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                sh """
+                                mvn clean deploy -Dmaven.test.skip=true \
+                                -s ${MAVEN_SETTINGS} \
+                                -DaltDeploymentRepository=${NEXUS_REPOSITORY}::default::${NEXUS_URL}
+                                """
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}")
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("http://${DOCKER_REGISTRY}") {
+                        docker.image("${DOCKER_REGISTRY}/${IMAGE_NAME}").push()
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+
+        success {
+            echo 'Build completed successfully!'
+        }
+
+        failure {
+            echo 'Build failed. Check the logs for details.'
+        }
+    }
+}
