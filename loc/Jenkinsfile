@@ -7,6 +7,7 @@ pipeline {
         NEXUS_REPOSITORY = 'maven-snapshots'
         NEXUS_CREDENTIALS_ID = 'nexus-credentials-id'
         DOCKERFILE_PATH = 'loc/Dockerfile'
+        DEPLOY_REPO_URL = 'https://github.com/ss5924/inventory-rs-deploy.git'
         DOCKER_REGISTRY = '192.168.0.37:5000'
     }
 
@@ -34,13 +35,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Checkout Deploy Repo') {
+            steps {
+                dir('deploy-repo') {
+                    git branch: 'master', url: "${DEPLOY_REPO_URL}"
+                }
+            }
+        }
         
         stage('Build and Push Docker Image') {
             steps {
                 script {
                     docker.withRegistry("http://${DOCKER_REGISTRY}") {
-                        def customImage = docker.build("${IMAGE_NAME}", "-f ${DOCKERFILE_PATH} .")
-                        customImage.push()
+                        def dockerfilePath = "${WORKSPACE}/deploy-repo/${DOCKERFILE_PATH}"
+                        if (!fileExists(dockerfilePath)) {
+                            error "Dockerfile not found at ${dockerfilePath}"
+                        }
+                        def image = docker.build("${IMAGE_NAME}", "-f ${dockerfilePath} .")
+                        image.push()
                     }
                 }
             }
