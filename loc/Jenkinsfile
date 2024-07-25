@@ -35,18 +35,14 @@ pipeline {
                 }
             }
         }
-
-        stage('Checkout Deploy Repo') {
-            steps {
-                dir('deploy-repo') {
-                    git branch: 'master', url: "${DEPLOY_REPO_URL}"
-                }
-            }
-        }
         
         stage('Build and Push Docker Image') {
             steps {
                 script {
+                    dir('deploy-repo') {
+                        git branch: 'master', url: "${DEPLOY_REPO_URL}"
+                    }
+                    
                     docker.withRegistry("http://${DOCKER_REGISTRY}") {
                         def dockerfilePath = "${WORKSPACE}/deploy-repo/${DOCKERFILE_PATH}"
                         if (!fileExists(dockerfilePath)) {
