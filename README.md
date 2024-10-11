@@ -26,10 +26,11 @@ Jenkins
 
 
 📊 ERD & Structure
-ERD
+
+1. ERD
 -image-
 
-Structure
+2. Structure
 -image-
 
 🔑 핵심기능
