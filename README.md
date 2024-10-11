@@ -30,7 +30,7 @@
 ![erd](https://github.com/user-attachments/assets/91108042-104d-4627-bafa-7483f3b51efa)
 
 ### 2. Structure
-![구조도](https://github.com/user-attachments/assets/b97e7344-db8f-46b5-b217-09e86f5152ca)
+![시스템백엔드구조도 drawio](https://github.com/user-attachments/assets/d4588399-deb4-4401-98b8-5f875754a78e)
 
 
 <!-- # 🔑 핵심기능-->
