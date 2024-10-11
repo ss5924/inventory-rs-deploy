@@ -28,9 +28,10 @@ Jenkins
 📊 ERD & Structure
 
 1. ERD
--image-
+![erd](https://github.com/user-attachments/assets/91108042-104d-4627-bafa-7483f3b51efa)
 
-2. Structure
+
+3. Structure
 -image-
 
 🔑 핵심기능
