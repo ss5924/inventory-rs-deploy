@@ -40,6 +40,12 @@
 ### 1. 요청서
 - 시스템 요청서.pdf 확인 
 
+### 2. 관련 리포지토리
+- https://github.com/ss5924/inventory-rs-deploy
+- https://github.com/ss5924/inventory-rs-gateway
+- https://github.com/ss5924/inventory-rs-machine-service
+- https://github.com/ss5924/inventory-rs-loc-service
+- https://github.com/ss5924/inventory-rs-config
 
 ### 2. 프로젝트 목적 및 후기
 - 이 프로젝트의 목표는 실무에서 사용할 수 있는 백엔드 시스템을 설계하고 운영하는 것
